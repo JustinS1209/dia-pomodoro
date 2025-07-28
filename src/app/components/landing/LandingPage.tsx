@@ -1,23 +1,11 @@
 "use client";
 
-import { Header } from "@/app/components/landing/Header";
 import { HeroSection } from "@/app/components/landing/HeroSection";
-import { FeaturesSection } from "@/app/components/landing/FeaturesSection";
-import { StatsSection } from "@/app/components/landing/StatsSection";
-import { TestimonialsSection } from "@/app/components/landing/TestimonialsSection";
-import { CTASection } from "@/app/components/landing/CTASection";
-import { Footer } from "@/app/components/landing/Footer";
 
 export const LandingPage = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50">
       <HeroSection />
-      <FeaturesSection />
-      <StatsSection />
-      <TestimonialsSection />
-      <CTASection />
-      <Footer />
 
       <style jsx>{`
         @keyframes fade-in-up {

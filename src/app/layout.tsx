@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Header } from "./components/landing/Header";
 import "./globals.css";
 import { AuthProvider } from "@/features/auth/contexts/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -22,7 +23,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
+        <Header />
         <QueryClientProvider client={queryClient}>
           <AuthProvider>{children}</AuthProvider>
         </QueryClientProvider>
