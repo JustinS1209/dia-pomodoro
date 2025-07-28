@@ -39,8 +39,8 @@ const config = {
 
 const scopes = {
   scopes: {
-    backend: ["api://33af1ee8-cdf9-4454-a8a6-927ce2a34902/Calendars.Read"],
-    graph: ["profile", "Files.Read.All", "Calendars.Read"],
+    backend: ["api://33af1ee8-cdf9-4454-a8a6-927ce2a34902/full-access"],
+    graph: ["profile", "Calendars.Read"],
   },
 };
 
