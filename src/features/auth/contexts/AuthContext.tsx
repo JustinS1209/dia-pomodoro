@@ -31,15 +31,17 @@ export const AuthContext = createContext<AuthAppContext>({});
 
 const config = {
   auth: {
-    clientId: process.env.AZURE_AD_CLIENT_ID as string,
-    authority: process.env.AZURE_AD_TENANT_ID,
-    knownAuthorities: [process.env.AZURE_AD_TENANT_ID],
+    clientId: process.env.NEXT_PUBLIC_AZURE_AD_CLIENT_ID as string,
+    authority: process.env.NEXT_PUBLIC_AZURE_AD_TENANT_ID,
+    knownAuthorities: [process.env.NEXT_PUBLIC_AZURE_AD_TENANT_ID],
     redirectUri: "/",
   },
   cache: {
     cacheLocation: "sessionStorage",
   },
 };
+
+console.log(config);
 
 const scopes = {
   scopes: {
