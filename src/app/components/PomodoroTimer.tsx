@@ -29,7 +29,7 @@ export const PomodoroTimer = () => {
         </button>
 
         <div className="grid grid-cols-3">
-          <p classNAme>Work Duration: </p>
+          <p className>Work Duration: </p>
           <input
             type="number"
             value={workDuration}
