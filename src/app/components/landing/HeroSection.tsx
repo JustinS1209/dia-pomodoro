@@ -1,8 +1,16 @@
 "use client";
 import { Users } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { PomodoroTimer } from "@/app/components/PomodoroTimer";
 
 export const HeroSection = () => {
+  const router = useRouter();
+
+  const handleCalendarClick = () => {
+    router.push("/calendar");
+  };
+
   return (
     <section className="pt-20 pb-16 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,10 +29,15 @@ export const HeroSection = () => {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full text-lg font-semibold hover:border-red-500 hover:text-red-600 transition-all duration-300 flex items-center justify-center space-x-2">
-                <Users className="h-5 w-5" />
-                <span>Try Team/Calendar Synchronization Mode</span>
-              </button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handleCalendarClick}
+                className="px-8 py-4 text-lg font-semibold hover:border-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-300 h-auto"
+              >
+                <Users className="h-5 w-5 mr-2" />
+                Try Team Session
+              </Button>
             </div>
           </div>
 
