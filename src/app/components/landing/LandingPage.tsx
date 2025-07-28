@@ -5,7 +5,7 @@ import { HeroSection } from "@/app/components/landing/HeroSection";
 
 export const LandingPage = () => {
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50">
       <Header />
       <HeroSection />
 

@@ -29,9 +29,9 @@ export const HeroSection = () => {
           <div className="space-y-8 animate-fade-in-up">
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Focus Better,
+                Kranker Timer,
                 <span className="block bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                  Achieve More
+                  Cüs
                 </span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
@@ -41,25 +41,10 @@ export const HeroSection = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="group bg-gradient-to-r from-red-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-red-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
-                <Play className="h-5 w-5 group-hover:animate-pulse" />
-                <span>Start Focusing Now</span>
-              </button>
               <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full text-lg font-semibold hover:border-red-500 hover:text-red-600 transition-all duration-300 flex items-center justify-center space-x-2">
                 <Users className="h-5 w-5" />
-                <span>Try Team Mode</span>
+                <span>Try Team/Calendar Synchronization Mode</span>
               </button>
-            </div>
-
-            <div className="flex items-center space-x-8 text-sm text-gray-500">
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                <span>Free 14-day trial</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                <span>No credit card required</span>
-              </div>
             </div>
           </div>
 

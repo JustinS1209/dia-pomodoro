@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "dia-pomodoro - Focus Better, Achieve More",
+  title: "dia-pomodoro - Kranker Timer, Cüs",
   description: "The ultimate Pomodoro timer for teams",
 };
 
