@@ -19,7 +19,6 @@ const fetchUsers = async (filter: Filter) => {
   if (!hasSearchQuery && !hasNtUsers) {
     return [];
   }
-
   let searchParameters: Array<string> = [];
 
   if (hasNtUsers) {
@@ -55,7 +54,7 @@ const fetchUsers = async (filter: Filter) => {
 
       const users = (
         (await graphAxios.get(`https://graph.microsoft.com/v1.0/${url}`)) as any
-      ).value as GraphUser[];
+      ).data.value as GraphUser[];
 
       graphUsers = [...graphUsers, ...users];
     }),
