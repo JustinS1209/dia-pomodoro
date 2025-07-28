@@ -39,8 +39,8 @@ const config = {
 
 const scopes = {
   scopes: {
-    backend: ["api://dia-brain/full-access"],
-    graph: ["profile", "User.ReadBasic.All", "Files.Read.All"],
+    backend: ["api://33af1ee8-cdf9-4454-a8a6-927ce2a34902/Calendars.Read"],
+    graph: ["profile", "Files.Read.All", "Calendars.Read"],
   },
 };
 
