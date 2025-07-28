@@ -8,11 +8,7 @@ import {
   useState,
 } from "react";
 import { GraphService, MsalService } from "@bosch-gs-bda-apps/msal-wrapper";
-import getConfig from "next/config";
-import { ResponseType } from "@microsoft/microsoft-graph-client";
-// import { Loader } from "@/features/common/components/Loader";
-
-// const { publicRuntimeConfig } = getConfig();
+import { jwtDecode } from "jwt-decode";
 
 type AuthAppContext = {
   currentUser?: BrainUser;
@@ -41,8 +37,6 @@ const config = {
   },
 };
 
-console.log(config);
-
 const scopes = {
   scopes: {
     backend: ["api://dia-brain/full-access"],
@@ -56,11 +50,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(true);
 
   async function fetchUser() {
-    console.log("test");
-    return await MsalService.instance.graph({
-      endpoint: "me",
-      responseType: ResponseType.JSON,
-    });
+    const token = (await MsalService.instance.getAccessToken([])) as string;
+    const decryptedToken = jwtDecode(token) as any;
+
+    return {
+      displayName: decryptedToken.name ?? "",
+      givenName: decryptedToken.given_name || "",
+      userId: decryptedToken.upn!.split("@")[0],
+      userInitials: createInitials(decryptedToken.name),
+    };
   }
 
   function createInitials(userDisplayName: string) {
@@ -82,12 +80,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       // await MsalService.instance.initialize();
       await MsalService.instance.handleRedirectPromise();
       const user = await fetchUser();
-      setCurrentUser({
-        displayName: user.displayName ?? "",
-        givenName: user.givenName || "",
-        userId: user.userPrincipalName!.split("@")[0],
-        userInitials: createInitials(user.displayName ?? ""),
-      });
+      setCurrentUser(user);
 
       try {
         const picture = await GraphService(
