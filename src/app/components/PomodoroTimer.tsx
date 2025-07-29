@@ -17,26 +17,18 @@ export const PomodoroTimer = () => {
 
   // Update current time when durations change
   useEffect(() => {
-    if (!isRunning) {
-      switch (sessionType) {
-        case "work":
-          setCurrentTime(workDuration * 60);
-          break;
-        case "shortBreak":
-          setCurrentTime(shortBreakDuration * 60);
-          break;
-        case "longBreak":
-          setCurrentTime(longBreakDuration * 60);
-          break;
-      }
+    switch (sessionType) {
+      case "work":
+        setCurrentTime(workDuration * 60);
+        break;
+      case "shortBreak":
+        setCurrentTime(shortBreakDuration * 60);
+        break;
+      case "longBreak":
+        setCurrentTime(longBreakDuration * 60);
+        break;
     }
-  }, [
-    workDuration,
-    shortBreakDuration,
-    longBreakDuration,
-    sessionType,
-    isRunning,
-  ]);
+  }, [workDuration, shortBreakDuration, longBreakDuration, sessionType]);
 
   // Handle session completion
   useEffect(() => {
