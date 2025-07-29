@@ -19,8 +19,7 @@ const fetchUsers = async (filter: Filter) => {
   if (!hasSearchQuery && !hasNtUsers) {
     return [];
   }
-
-  let searchParameters: Array<String> = [];
+  let searchParameters: Array<string> = [];
 
   if (hasNtUsers) {
     searchParameters = [
@@ -41,7 +40,7 @@ const fetchUsers = async (filter: Filter) => {
 
   const urlStart = "users?$filter=";
   const chunkSize = 15;
-  let searchParameterChunks: Array<Array<String>> = [];
+  const searchParameterChunks: Array<Array<string>> = [];
 
   for (let i = 0; i < searchParameters.length; i += chunkSize) {
     searchParameterChunks.push(searchParameters.slice(i, i + chunkSize));
@@ -51,11 +50,11 @@ const fetchUsers = async (filter: Filter) => {
 
   await Promise.all(
     searchParameterChunks.map(async (chunk) => {
-      let url = `${urlStart}${chunk.join(" OR ")}`;
+      const url = `${urlStart}${chunk.join(" OR ")}`;
 
-      let users = (
+      const users = (
         (await graphAxios.get(`https://graph.microsoft.com/v1.0/${url}`)) as any
-      ).value as GraphUser[];
+      ).data.value as GraphUser[];
 
       graphUsers = [...graphUsers, ...users];
     }),
