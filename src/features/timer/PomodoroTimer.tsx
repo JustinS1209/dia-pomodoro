@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Timer } from "@/app/components/Timer";
+import { Timer } from "@/features/timer/Timer";
 import { Play, Pause, Clock, Coffee, Moon, Users } from "lucide-react";
 
 type SessionType = "work" | "shortBreak" | "longBreak";
@@ -17,32 +17,22 @@ export const PomodoroTimer = () => {
 
   // Update current time when durations change
   useEffect(() => {
-    if (!isRunning) {
-      switch (sessionType) {
-        case "work":
-          setCurrentTime(workDuration * 60);
-          break;
-        case "shortBreak":
-          setCurrentTime(shortBreakDuration * 60);
-          break;
-        case "longBreak":
-          setCurrentTime(longBreakDuration * 60);
-          break;
-      }
+    switch (sessionType) {
+      case "work":
+        setCurrentTime(workDuration * 60);
+        break;
+      case "shortBreak":
+        setCurrentTime(shortBreakDuration * 60);
+        break;
+      case "longBreak":
+        setCurrentTime(longBreakDuration * 60);
+        break;
     }
-  }, [
-    workDuration,
-    shortBreakDuration,
-    longBreakDuration,
-    sessionType,
-    isRunning,
-  ]);
+  }, [workDuration, shortBreakDuration, longBreakDuration, sessionType]);
 
   // Handle session completion
   useEffect(() => {
     if (currentTime <= 0 && isRunning) {
-      setIsRunning(false);
-
       if (sessionType === "work") {
         const newSessionCount = sessionCount + 1;
         setSessionCount(newSessionCount);
@@ -63,7 +53,6 @@ export const PomodoroTimer = () => {
     }
   }, [
     currentTime,
-    isRunning,
     sessionType,
     sessionCount,
     workDuration,
@@ -106,7 +95,7 @@ export const PomodoroTimer = () => {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-2xl p-8 animate-float">
+    <div className="bg-white rounded-3xl shadow-2xl p-8">
       <div className="text-center space-y-6">
         <div className="mb-4">
           <h3 className="text-2xl font-semibold text-gray-800">

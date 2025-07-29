@@ -9,6 +9,7 @@ import {
 } from "react";
 import { GraphService, MsalService } from "@bosch-gs-bda-apps/msal-wrapper";
 import { jwtDecode } from "jwt-decode";
+import LoadingPage from "@/app/components/LoadingPage";
 
 type AuthAppContext = {
   currentUser?: BrainUser;
@@ -74,26 +75,38 @@ export function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      try {
-        new MsalService(config as any, scopes);
-      } catch (e) {
-        // error => msal instance already defined
-      }
-      // await MsalService.instance.initialize();
-      await MsalService.instance.handleRedirectPromise();
-      const user = await fetchUser();
-      setCurrentUser(user);
 
-      try {
-        const picture = await GraphService(
-          MsalService.instance,
-        ).fetchCurrentUserProfilePicture();
-        setUserPhoto(picture);
-      } catch (e) {
-        new Error("User has no profile picture", { cause: e });
-      } finally {
-        setLoading(false);
-      }
+      // Start the minimum loading time timer
+      const minimumLoadingTime = new Promise((resolve) =>
+        setTimeout(resolve, 2000),
+      ); // 2 seconds
+
+      // Start the actual loading process
+      const loadingProcess = async () => {
+        try {
+          new MsalService(config as any, scopes);
+        } catch (e) {
+          // error => msal instance already defined
+        }
+        // await MsalService.instance.initialize();
+        await MsalService.instance.handleRedirectPromise();
+        const user = await fetchUser();
+        setCurrentUser(user);
+
+        try {
+          const picture = await GraphService(
+            MsalService.instance,
+          ).fetchCurrentUserProfilePicture();
+          setUserPhoto(picture);
+        } catch (e) {
+          new Error("User has no profile picture", { cause: e });
+        }
+      };
+
+      // Wait for both the actual loading AND the minimum time
+      await Promise.all([loadingProcess(), minimumLoadingTime]);
+
+      setLoading(false);
     })();
   }, []);
 
@@ -106,8 +119,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   );
 
   if (loading) {
-    // return <Loader />;
-    return "TODO Loading...";
+    return <LoadingPage />; // 👈 Use the beautiful LoadingPage component
   }
 
   return (
