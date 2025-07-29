@@ -16,7 +16,6 @@ export const Timer = ({
   currentTime,
   setCurrentTime,
   isRunning,
-  setIsRunning,
   initialTime,
   sessionType,
 }: TimerProps) => {
@@ -51,7 +50,10 @@ export const Timer = ({
 
   const radius = 120;
   const circumference = 2 * Math.PI * radius;
-  const progress = ((initialTime - currentTime) / initialTime) * circumference;
+  const progress =
+    initialTime > 0 && !isNaN(initialTime) && !isNaN(currentTime)
+      ? ((initialTime - currentTime) / initialTime) * circumference
+      : 0;
 
   return (
     <div className="relative w-80 h-80 mx-auto">

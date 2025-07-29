@@ -33,8 +33,6 @@ export const PomodoroTimer = () => {
   // Handle session completion
   useEffect(() => {
     if (currentTime <= 0 && isRunning) {
-      setIsRunning(false);
-
       if (sessionType === "work") {
         const newSessionCount = sessionCount + 1;
         setSessionCount(newSessionCount);
@@ -55,7 +53,6 @@ export const PomodoroTimer = () => {
     }
   }, [
     currentTime,
-    isRunning,
     sessionType,
     sessionCount,
     workDuration,
@@ -98,7 +95,7 @@ export const PomodoroTimer = () => {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-2xl p-8 animate-float">
+    <div className="bg-white rounded-3xl shadow-2xl p-8">
       <div className="text-center space-y-6">
         <div className="mb-4">
           <h3 className="text-2xl font-semibold text-gray-800">
