@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Timer } from "@/app/components/Timer";
+import { Timer } from "@/features/timer/Timer";
 import { Play, Pause, Clock, Coffee, Moon, Users } from "lucide-react";
 
 type SessionType = "work" | "shortBreak" | "longBreak";
