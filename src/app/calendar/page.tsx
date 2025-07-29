@@ -23,24 +23,27 @@ const CalendarPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Find free time slots automatically
+  // Find free time slots automatically - improved logic
   const findFreeSlots = (): string[] => {
     const busySlots = new Set<string>();
 
-    // Mark slots occupied by existing events
-    [...mockEvents, ...pomodoroSessions].forEach(
-      (event: CalendarEvent | PomodoroSession) => {
-        const startHour = parseInt(event.time.split(":")[0]);
-        const durationHours = Math.ceil(event.duration / 60);
+    // Mark slots occupied by meetings (they block the full hour)
+    mockEvents.forEach((event: CalendarEvent) => {
+      const startHour = parseInt(event.time.split(":")[0]);
+      const durationHours = Math.ceil(event.duration / 60);
 
-        for (let i = 0; i < durationHours; i++) {
-          const slotHour = startHour + i;
-          if (slotHour >= 8 && slotHour < 20) {
-            busySlots.add(`${slotHour.toString().padStart(2, "0")}:00`);
-          }
+      for (let i = 0; i < durationHours; i++) {
+        const slotHour = startHour + i;
+        if (slotHour >= 8 && slotHour < 20) {
+          busySlots.add(`${slotHour.toString().padStart(2, "0")}:00`);
         }
-      },
-    );
+      }
+    });
+
+    // Mark slots occupied by existing pomodoro sessions (exact time match)
+    pomodoroSessions.forEach((session: PomodoroSession) => {
+      busySlots.add(session.time);
+    });
 
     // Return free slots (maximum 4 sessions per day)
     const freeSlots = timeSlots.filter((slot) => !busySlots.has(slot));
