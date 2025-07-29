@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroSection } from "@/app/components/landing/HeroSection";
+import { HeroSection } from "@/app/components/HeroSection";
 
 export const LandingPage = () => {
   return (

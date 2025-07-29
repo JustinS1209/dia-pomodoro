@@ -1,20 +1,24 @@
 "use client";
 import { useEffect } from "react";
 
+type SessionType = "work" | "shortBreak" | "longBreak";
+
 type TimerProps = {
   currentTime: number;
   setCurrentTime: (time: number) => void;
   isRunning: boolean;
   setIsRunning: (running: boolean) => void;
-  workDuration?: number;
-  shortBreakDuration?: number;
-  longBreakDuration?: number;
+  initialTime: number;
+  sessionType: SessionType;
 };
 
 export const Timer = ({
   currentTime,
   setCurrentTime,
   isRunning,
+  setIsRunning,
+  initialTime,
+  sessionType,
 }: TimerProps) => {
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined;
@@ -29,21 +33,61 @@ export const Timer = ({
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
+  const getSessionColor = () => {
+    switch (sessionType) {
+      case "work":
+        return "text-red-500";
+      case "shortBreak":
+        return "text-green-500";
+      case "longBreak":
+        return "text-purple-500";
+    }
+  };
+
+  const radius = 120;
+  const circumference = 2 * Math.PI * radius;
+  const progress = ((initialTime - currentTime) / initialTime) * circumference;
+
   return (
-    <div className="w-64 h-64 mx-auto rounded-full border-8 border-red-100 flex items-center justify-center relative overflow-hidden">
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-red-500 to-orange-600 rounded-full transition-all duration-1000"
-        style={{
-          background: `conic-gradient(from 0deg, #ef4444 ${((1500 - currentTime) / 1500) * 360}deg, #fecaca ${((1500 - currentTime) / 1500) * 360}deg)`,
-        }}
-      ></div>
-      <div className="relative z-10 bg-white w-52 h-52 rounded-full flex items-center justify-center">
-        <span className="text-4xl font-mono font-bold text-gray-800">
-          {formatTime(currentTime)}
-        </span>
+    <div className="relative w-80 h-80 mx-auto">
+      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 280 280">
+        {/* Background circle */}
+        <circle
+          cx="140"
+          cy="140"
+          r={radius}
+          stroke="currentColor"
+          strokeWidth="8"
+          fill="none"
+          className="text-gray-200"
+        />
+        {/* Progress circle */}
+        <circle
+          cx="140"
+          cy="140"
+          r={radius}
+          stroke="currentColor"
+          strokeWidth="8"
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference - progress}
+          className={`${getSessionColor()} transition-all duration-1000 ease-linear`}
+          strokeLinecap="round"
+        />
+      </svg>
+
+      {/* Timer display */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl font-bold text-gray-800">
+            {formatTime(currentTime)}
+          </div>
+        </div>
       </div>
     </div>
   );
