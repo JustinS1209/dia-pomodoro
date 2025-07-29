@@ -107,13 +107,6 @@ const LoadingPage: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* AI Badge */}
-        <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg animate-float">
-          <Brain className="h-4 w-4 animate-pulse" />
-          <span>AI-Powered</span>
-          <Sparkles className="h-4 w-4" />
-        </div>
       </div>
 
       {/* Custom Styles */}

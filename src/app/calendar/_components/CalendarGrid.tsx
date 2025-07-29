@@ -168,24 +168,17 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           {pomodoroSessions.map((session) => (
             <div
               key={session.id}
-              className="absolute rounded-lg shadow-lg border-l-4 border-red-600 bg-red-500 text-white p-3 transition-all duration-300 hover:shadow-xl overflow-hidden group"
+              className="absolute rounded-lg shadow-lg border-l-4 border-red-600 bg-red-500 text-white p-2 transition-all duration-300 hover:shadow-xl overflow-hidden group"
               style={getEventStyle(session)}
             >
               <div className="flex items-start justify-between mb-1">
                 <div className="flex items-center space-x-2 flex-1 min-w-0 pr-2">
-                  <Timer className="h-4 w-4 flex-shrink-0" />
                   <h3 className="font-semibold text-sm overflow-hidden">
                     <span className="block truncate">{session.title}</span>
                   </h3>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onClearSession(session.id)}
-                  className="opacity-75 hover:opacity-100 transition-opacity duration-200 flex-shrink-0 h-auto hover:bg-red-600/20 z-10 relative"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+
+                <X className="h-4 w-4 cursor-pointer" />
               </div>
 
               <div className="space-y-1 text-xs opacity-90">
