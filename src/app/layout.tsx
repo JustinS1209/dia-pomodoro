@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Header } from "./components/landing/Header";
+import { Header } from "./components/Header";
 import "./globals.css";
 import { AuthProvider } from "@/features/auth/contexts/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

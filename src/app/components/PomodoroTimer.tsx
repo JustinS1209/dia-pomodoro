@@ -1,55 +1,252 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Timer } from "@/app/components/Timer";
-import { Play } from "lucide-react";
+import { Play, Pause, Clock, Coffee, Moon, Users } from "lucide-react";
+
+type SessionType = "work" | "shortBreak" | "longBreak";
 
 export const PomodoroTimer = () => {
-  const [currentTime, setCurrentTime] = useState(25 * 60);
-  const [isRunning, setIsRunning] = useState(false);
   const [workDuration, setWorkDuration] = useState(25);
   const [shortBreakDuration, setShortBreakDuration] = useState(5);
   const [longBreakDuration, setLongBreakDuration] = useState(15);
+  const [shortBreaksBeforeLong, setShortBreaksBeforeLong] = useState(4);
+
+  const [currentTime, setCurrentTime] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [sessionType, setSessionType] = useState<SessionType>("work");
+  const [sessionCount, setSessionCount] = useState(0);
+
+  // Update current time when durations change
+  useEffect(() => {
+    if (!isRunning) {
+      switch (sessionType) {
+        case "work":
+          setCurrentTime(workDuration * 60);
+          break;
+        case "shortBreak":
+          setCurrentTime(shortBreakDuration * 60);
+          break;
+        case "longBreak":
+          setCurrentTime(longBreakDuration * 60);
+          break;
+      }
+    }
+  }, [
+    workDuration,
+    shortBreakDuration,
+    longBreakDuration,
+    sessionType,
+    isRunning,
+  ]);
+
+  // Handle session completion
+  useEffect(() => {
+    if (currentTime <= 0 && isRunning) {
+      setIsRunning(false);
+
+      if (sessionType === "work") {
+        const newSessionCount = sessionCount + 1;
+        setSessionCount(newSessionCount);
+
+        // After configured number of work sessions, take a long break
+        if (newSessionCount % shortBreaksBeforeLong === 0) {
+          setSessionType("longBreak");
+          setCurrentTime(longBreakDuration * 60);
+        } else {
+          setSessionType("shortBreak");
+          setCurrentTime(shortBreakDuration * 60);
+        }
+      } else {
+        // After any break, go back to work
+        setSessionType("work");
+        setCurrentTime(workDuration * 60);
+      }
+    }
+  }, [
+    currentTime,
+    isRunning,
+    sessionType,
+    sessionCount,
+    workDuration,
+    shortBreakDuration,
+    longBreakDuration,
+    shortBreaksBeforeLong,
+  ]);
+
+  const getSessionLabel = () => {
+    switch (sessionType) {
+      case "work":
+        return "Focus Time";
+      case "shortBreak":
+        return "Short Break";
+      case "longBreak":
+        return "Long Break";
+    }
+  };
+
+  const getSessionColor = () => {
+    switch (sessionType) {
+      case "work":
+        return "from-red-500 to-orange-600";
+      case "shortBreak":
+        return "from-green-500 to-blue-600";
+      case "longBreak":
+        return "from-purple-500 to-pink-600";
+    }
+  };
+
+  const getInitialTime = () => {
+    switch (sessionType) {
+      case "work":
+        return workDuration * 60;
+      case "shortBreak":
+        return shortBreakDuration * 60;
+      case "longBreak":
+        return longBreakDuration * 60;
+    }
+  };
 
   return (
     <div className="bg-white rounded-3xl shadow-2xl p-8 animate-float">
       <div className="text-center space-y-6">
+        <div className="mb-4">
+          <h3 className="text-2xl font-semibold text-gray-800">
+            {getSessionLabel()}
+          </h3>
+          <p className="text-sm text-gray-600">
+            Session {Math.floor(sessionCount / shortBreaksBeforeLong) + 1} •
+            Work Period {(sessionCount % shortBreaksBeforeLong) + 1}
+          </p>
+        </div>
+
         <div className="relative">
           <Timer
             currentTime={currentTime}
             setCurrentTime={setCurrentTime}
             isRunning={isRunning}
             setIsRunning={setIsRunning}
+            initialTime={getInitialTime()}
+            sessionType={sessionType}
           />
         </div>
+
         <button
           onClick={() => setIsRunning(!isRunning)}
-          className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-8 py-3 rounded-full hover:from-red-600 hover:to-orange-700 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 mx-auto"
+          className={`bg-gradient-to-r ${getSessionColor()} text-white px-8 py-3 rounded-full hover:opacity-90 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 mx-auto`}
         >
-          <Play className={`h-5 w-5 ${isRunning ? "animate-pulse" : ""}`} />
-          <span>{isRunning ? "Pause" : "Start"} Focus</span>
+          {isRunning ? (
+            <Pause className="h-5 w-5" />
+          ) : (
+            <Play className="h-5 w-5" />
+          )}
+          <span>
+            {isRunning ? "Pause" : "Start"} {getSessionLabel()}
+          </span>
         </button>
 
-        <div className="grid grid-cols-3">
-          <p>Work Duration: </p>
-          <input
-            type="number"
-            value={workDuration}
-            onChange={(e) => setWorkDuration(Number(e.target.value))}
-            className="w-20 text-center border border-gray-300 rounded-md p-2"
-          />
-          <p>Short Break Duration: </p>
-          <input
-            type="number"
-            value={shortBreakDuration}
-            onChange={(e) => setShortBreakDuration(Number(e.target.value))}
-            className="w-20 text-center border border-gray-300 rounded-md p-2"
-          />
-          <p>Long Break Duration: </p>
-          <input
-            type="number"
-            value={longBreakDuration}
-            onChange={(e) => setLongBreakDuration(Number(e.target.value))}
-            className="w-20 text-center border border-gray-300 rounded-md p-2"
-          />
+        <div className="bg-gray-50 rounded-2xl p-6 mt-6">
+          <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+            Timer Settings
+          </h4>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-red-100 rounded-full p-2">
+                  <Clock className="h-4 w-4 text-red-600" />
+                </div>
+                <label className="text-gray-700 font-medium text-sm">
+                  Work Duration
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={workDuration}
+                  onChange={(e) => setWorkDuration(Number(e.target.value))}
+                  className="flex-1 text-center border-2 border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 font-semibold text-gray-700 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  disabled={isRunning}
+                />
+                <span className="text-sm text-gray-500 font-medium">min</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-green-100 rounded-full p-2">
+                  <Coffee className="h-4 w-4 text-green-600" />
+                </div>
+                <label className="text-gray-700 font-medium text-sm">
+                  Short Break
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="number"
+                  min="1"
+                  max="30"
+                  value={shortBreakDuration}
+                  onChange={(e) =>
+                    setShortBreakDuration(Number(e.target.value))
+                  }
+                  className="flex-1 text-center border-2 border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 font-semibold text-gray-700 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  disabled={isRunning}
+                />
+                <span className="text-sm text-gray-500 font-medium">min</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-purple-100 rounded-full p-2">
+                  <Moon className="h-4 w-4 text-purple-600" />
+                </div>
+                <label className="text-gray-700 font-medium text-sm">
+                  Long Break
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={longBreakDuration}
+                  onChange={(e) => setLongBreakDuration(Number(e.target.value))}
+                  className="flex-1 text-center border-2 border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 font-semibold text-gray-700 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  disabled={isRunning}
+                />
+                <span className="text-sm text-gray-500 font-medium">min</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-blue-100 rounded-full p-2">
+                  <Users className="h-4 w-4 text-blue-600" />
+                </div>
+                <label className="text-gray-700 font-medium text-sm">
+                  Work Sessions
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="number"
+                  min="2"
+                  max="10"
+                  value={shortBreaksBeforeLong}
+                  onChange={(e) =>
+                    setShortBreaksBeforeLong(Number(e.target.value))
+                  }
+                  className="flex-1 text-center border-2 border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 font-semibold text-gray-700 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  disabled={isRunning}
+                />
+                <span className="text-xs text-gray-500 font-medium">
+                  before long break
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
