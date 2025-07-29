@@ -50,7 +50,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(true);
 
   async function fetchUser() {
-    const token = (await MsalService.instance.getAccessToken([])) as string;
+    const token = (await MsalService.instance.getAccessToken(
+      scopes.scopes.graph,
+    )) as string;
     const decryptedToken = jwtDecode(token) as any;
 
     return {
