@@ -1,5 +1,5 @@
-import axios from "axios";
 import { CalendarData } from "@/features/calendar/configurations/types";
+import { graphAxios } from "@/lib/axios";
 
 // TODO test for correctness
 export async function fetchCalendarEvents(
@@ -10,6 +10,6 @@ export async function fetchCalendarEvents(
   const start = startDate.toISOString();
   const end = endDate.toISOString();
   const requestUrl = `https://graph.microsoft.com/v1.0/users/${userPrincipalName}/calendarview?startdatetime=${start}&enddatetime=${end}`;
-  const response = await axios.get(requestUrl);
+  const response = await graphAxios.get(requestUrl);
   return response.data.value;
 }
