@@ -1,5 +1,3 @@
-// src/lib/calendar-data.ts
-
 import { CalendarEvent } from "@/app/calendar/types/calendar";
 
 export const mockEvents: CalendarEvent[] = [
@@ -10,7 +8,6 @@ export const mockEvents: CalendarEvent[] = [
     duration: 30,
     type: "meeting",
     attendees: 5,
-    location: "Teams",
     color: "bg-blue-500",
   },
   {

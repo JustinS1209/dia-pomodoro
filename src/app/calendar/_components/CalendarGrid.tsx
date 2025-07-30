@@ -38,9 +38,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
   const getEventStyle = (event: CalendarEvent | PomodoroSession) => {
     const startHour = parseInt(event.time.split(":")[0]);
-    const top = (startHour - 8) * 80 + 60;
-    const height = (event.duration / 60) * 80;
-
+    const top = (startHour - 8) * 120 + 60;
+    const height = Math.max((event.duration / 60) * 120, 80);
     return {
       top: `${top}px`,
       height: `${height}px`,
@@ -66,7 +65,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       </CardHeader>
 
       <CardContent className="p-0">
-        <div className="relative" style={{ height: "960px" }}>
+        <div className="relative" style={{ height: "1440px" }}>
           {/* Time Grid */}
           <div className="absolute inset-0">
             {timeSlots.map((timeSlot, index) => {
@@ -84,8 +83,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                         : "bg-gray-50/30"
                   }`}
                   style={{
-                    top: `${index * 80}px`,
-                    height: "80px",
+                    top: `${index * 120}px`,
+                    height: "120px",
                   }}
                 >
                   {/* Time Label */}
@@ -120,17 +119,16 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
               );
             })}
           </div>
-
           {/* Calendar Events */}
           {events.map((event) => (
             <div
               key={event.id}
-              className={`absolute rounded-lg shadow-lg border-l-4 p-3 ${event.color} text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden`}
+              className={`absolute rounded-lg shadow-lg border-l-4 p-2 ${event.color} text-white transition-all duration-300 hover:shadow-xl overflow-hidden`}
               style={getEventStyle(event)}
             >
               <div className="flex items-start justify-between mb-1">
-                <h3 className="font-semibold text-sm leading-tight truncate pr-2 flex-1">
-                  {event.title}
+                <h3 className="font-semibold text-sm leading-tight pr-2 flex-1 overflow-hidden">
+                  <span className="block truncate">{event.title}</span>
                 </h3>
                 <Clock className="h-4 w-4 opacity-75 flex-shrink-0" />
               </div>
@@ -166,36 +164,28 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
               </div>
             </div>
           ))}
-
           {/* Pomodoro Sessions */}
           {pomodoroSessions.map((session) => (
             <div
               key={session.id}
-              className="absolute rounded-lg shadow-lg border-l-4 border-red-600 bg-red-500 text-white p-3 transform transition-all duration-300 hover:scale-105 overflow-hidden"
+              className="absolute rounded-lg shadow-lg border-l-4 border-red-600 bg-red-500 text-white p-2 transition-all duration-300 hover:shadow-xl overflow-hidden group"
               style={getEventStyle(session)}
             >
               <div className="flex items-start justify-between mb-1">
-                <div className="flex items-center space-x-2 flex-1 min-w-0">
-                  <Timer className="h-4 w-4 flex-shrink-0" />
-                  <h3 className="font-semibold text-sm truncate">
-                    {session.title}
+                <div className="flex items-center space-x-2 flex-1 min-w-0 pr-2">
+                  <h3 className="font-semibold text-sm overflow-hidden">
+                    <span className="block truncate">{session.title}</span>
                   </h3>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onClearSession(session.id)}
-                  className="opacity-75 hover:opacity-100 transition-opacity duration-200 flex-shrink-0 ml-2 h-auto p-1 hover:bg-red-600/20"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+
+                <X className="h-4 w-4 cursor-pointer" />
               </div>
 
               <div className="space-y-1 text-xs opacity-90">
                 <div className="flex items-center space-x-2">
                   <Clock className="h-3 w-3 flex-shrink-0" />
                   <span className="truncate">
-                    {session.time} ({session.duration}min)
+                    {session.time} ({session.duration} min)
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">

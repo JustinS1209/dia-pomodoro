@@ -3,17 +3,18 @@
 import {
   createContext,
   PropsWithChildren,
+  useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 import { GraphService, MsalService } from "@bosch-gs-bda-apps/msal-wrapper";
 import { jwtDecode } from "jwt-decode";
+import LoadingPage from "@/app/components/LoadingPage";
 
 type AuthAppContext = {
   currentUser?: BrainUser;
   userPhoto?: string;
-  getAccessToken?: string;
 };
 
 export interface BrainUser {
@@ -21,6 +22,7 @@ export interface BrainUser {
   givenName: string;
   userId: string;
   userInitials: string;
+  userPrincipalName: string;
 }
 
 export const AuthContext = createContext<AuthAppContext>({});
@@ -60,7 +62,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       givenName: decryptedToken.given_name || "",
       userId: decryptedToken.upn!.split("@")[0],
       userInitials: createInitials(decryptedToken.name),
-    };
+      userPrincipalName: decryptedToken.upn,
+    } as BrainUser;
   }
 
   function createInitials(userDisplayName: string) {
@@ -74,26 +77,38 @@ export function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      try {
-        new MsalService(config as any, scopes);
-      } catch (e) {
-        // error => msal instance already defined
-      }
-      // await MsalService.instance.initialize();
-      await MsalService.instance.handleRedirectPromise();
-      const user = await fetchUser();
-      setCurrentUser(user);
 
-      try {
-        const picture = await GraphService(
-          MsalService.instance,
-        ).fetchCurrentUserProfilePicture();
-        setUserPhoto(picture);
-      } catch (e) {
-        new Error("User has no profile picture", { cause: e });
-      } finally {
-        setLoading(false);
-      }
+      // Start the minimum loading time timer
+      const minimumLoadingTime = new Promise((resolve) =>
+        setTimeout(resolve, 2000),
+      ); // 2 seconds
+
+      // Start the actual loading process
+      const loadingProcess = async () => {
+        try {
+          new MsalService(config as any, scopes);
+        } catch (e) {
+          // error => msal instance already defined
+        }
+        // await MsalService.instance.initialize();
+        await MsalService.instance.handleRedirectPromise();
+        const user = await fetchUser();
+        setCurrentUser(user);
+
+        try {
+          const picture = await GraphService(
+            MsalService.instance,
+          ).fetchCurrentUserProfilePicture();
+          setUserPhoto(picture);
+        } catch (e) {
+          new Error("User has no profile picture", { cause: e });
+        }
+      };
+
+      // Wait for both the actual loading AND the minimum time
+      await Promise.all([loadingProcess(), minimumLoadingTime]);
+
+      setLoading(false);
     })();
   }, []);
 
@@ -106,8 +121,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   );
 
   if (loading) {
-    // return <Loader />;
-    return "TODO Loading...";
+    return <LoadingPage />; // 👈 Use the beautiful LoadingPage component
   }
 
   return (
@@ -115,4 +129,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
       {currentUser && children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }
