@@ -24,7 +24,7 @@ export const Header = () => {
           className="flex items-center space-x-2 cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-red-200 to-orange-300 rounded-full flex items-center justify-center">
             <Image
               src="/assets/images/tomato.svg"
               alt="Tomato Logo"
@@ -34,7 +34,7 @@ export const Header = () => {
             />
           </div>
           <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-            dia-pomodoro
+            DIA Pomodoro
           </span>
         </div>
       </div>

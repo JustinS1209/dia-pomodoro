@@ -62,43 +62,13 @@ const CalendarPage: React.FC = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const activityTitles = [
-      "Desk Stretch",
-      "Chair Squats",
-      "Wall Push-Ups",
-      "Seated Leg Raises",
-      "Shoulder Rolls",
-      "Standing Calf Raises",
-      "Neck Stretches",
-      "Arm Circles",
-      "Toe Touches",
-      "Seated Marches",
-      "Wrist Circles",
-      "Ankle Rotations",
-      "Standing Side Bends",
-      "Seated Torso Twists",
-      "Finger Stretches",
-      "Standing Hamstring Stretch",
-      "Seated Back Extensions",
-      "Standing Hip Circles",
-      "Seated Shoulder Shrugs",
-      "Standing Quad Stretch",
-      "Seated Figure Four Stretch",
-      "Standing Glute Squeeze",
-      "Seated Abdominal Squeeze",
-      "Standing Heel Raises",
-      "Seated Spinal Twist",
-      "Standing Arm Swings",
-      "Seated Butterfly Stretch",
-      "Standing Knee Lifts",
-      "Seated Calf Stretch",
-      "Standing Elbow Circles",
-      "Seated Side Reaches"
+      "Focus Session"
     ];
 
     const newSessions: PomodoroSession[] = freeSlots.map((timeSlot, index) => ({
       id: Date.now() + index,
       time: timeSlot,
-      duration: 25,
+      duration: 50,
       type: "pomodoro",
       title: activityTitles[index % activityTitles.length],
       color: "bg-red-500",

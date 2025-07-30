@@ -17,13 +17,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>DIA Pomodoro</title>
+      </head>
       <body>
-<QueryClientProvider client={queryClient}>
-  <AuthProvider>
-    <Header />
-    {children}
-  </AuthProvider>
-</QueryClientProvider>      </body>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <Header />
+            {children}
+          </AuthProvider>
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }

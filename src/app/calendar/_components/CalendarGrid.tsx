@@ -19,7 +19,10 @@ import {
 } from "lucide-react";
 import { CalendarEvent, PomodoroSession } from "@/app/calendar/types/calendar";
 import { timeSlots } from "@/lib/calendar-data";
-import { fetchCalendarEventsForToday } from "@/features/calendar/utils";
+import {
+  fetchCalendarEventsForToday,
+  fetchCalendarEventsMeForToday,
+} from "@/features/calendar/utils";
 import { ntUserToUserPrincipalName } from "@/features/common/utils";
 import { useAuth } from "@/features/auth/contexts/AuthContext";
 import { transformGraphEventsToCalendarEvents } from "@/lib/calendar-utils";
@@ -58,7 +61,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
       const userPrincipalName = ntUserToUserPrincipalName(currentUser.userId);
       const fetchedEvents =
-        await fetchCalendarEventsForToday(userPrincipalName);
+        await fetchCalendarEventsMeForToday(userPrincipalName);
 
       console.log("Fetched raw events:", fetchedEvents);
 
@@ -158,7 +161,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           <div className="flex items-center space-x-3">
             <Calendar className="h-6 w-6 text-blue-600" />
             <h2 className="text-2xl font-semibold text-gray-900">
-              Today's Schedule
+              Today&#39;s Schedule
             </h2>
             {loading && (
               <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
@@ -297,11 +300,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           )}
 
           {/* Calendar Events */}
-          {events.map((event) => {
+          {events.map((event, index) => {
             const style = getEventStyle(event);
             return (
               <div
-                key={event.id}
+                key={index}
                 className={`absolute rounded-lg shadow-lg border-l-4 p-3 ${event.color} text-white transition-all duration-300 hover:shadow-xl overflow-hidden z-20`}
                 style={{
                   ...style,

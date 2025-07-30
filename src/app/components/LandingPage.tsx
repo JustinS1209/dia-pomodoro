@@ -20,9 +20,9 @@ export const LandingPage = () => {
             <div className="space-y-8 animate-fade-in-up">
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Kranker Timer,
+                  Focus Timer
                   <span className="block bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                    Cüs
+                    Pro
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
@@ -39,7 +39,7 @@ export const LandingPage = () => {
                   className="px-8 py-4 text-lg font-semibold hover:border-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-300 h-auto"
                 >
                   <Users className="h-5 w-5 mr-2" />
-                  Try Team Session
+                  Try Calendar Session
                 </Button>
               </div>
             </div>
