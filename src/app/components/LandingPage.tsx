@@ -39,7 +39,7 @@ export const LandingPage = () => {
                   className="px-8 py-4 text-lg font-semibold hover:border-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-300 h-auto"
                 >
                   <Users className="h-5 w-5 mr-2" />
-                  Try Team Session
+                  Try Calendar Session
                 </Button>
               </div>
             </div>

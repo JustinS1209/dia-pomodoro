@@ -68,7 +68,7 @@ const CalendarPage: React.FC = () => {
     const newSessions: PomodoroSession[] = freeSlots.map((timeSlot, index) => ({
       id: Date.now() + index,
       time: timeSlot,
-      duration: 25,
+      duration: 50,
       type: "pomodoro",
       title: activityTitles[index % activityTitles.length],
       color: "bg-red-500",
