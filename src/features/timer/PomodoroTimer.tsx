@@ -118,19 +118,30 @@ export const PomodoroTimer = () => {
           />
         </div>
 
-        <button
-          onClick={() => setIsRunning(!isRunning)}
-          className={`bg-gradient-to-r ${getSessionColor()} text-white px-8 py-3 rounded-full hover:opacity-90 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 mx-auto`}
-        >
-          {isRunning ? (
-            <Pause className="h-5 w-5" />
-          ) : (
-            <Play className="h-5 w-5" />
-          )}
-          <span>
-            {isRunning ? "Pause" : "Start"} {getSessionLabel()}
-          </span>
-        </button>
+        <div className="flex flex-row w-fit mx-auto space-x-4">
+          <button
+            onClick={() => setIsRunning(!isRunning)}
+            className={`bg-gradient-to-r ${getSessionColor()} text-white px-8 py-3 rounded-full hover:opacity-90 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 mx-auto`}
+          >
+            {isRunning ? (
+              <Pause className="h-5 w-5" />
+            ) : (
+              <Play className="h-5 w-5" />
+            )}
+            <span>
+              {isRunning ? "Pause" : "Start"} {getSessionLabel()}
+            </span>
+          </button>
+          <button
+            onClick={() => {
+              setIsRunning(false);
+              setCurrentTime(getInitialTime);
+            }}
+            className={`bg-gradient-to-r ${getSessionColor()} text-white px-8 py-3 rounded-full hover:opacity-90 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 mx-auto`}
+          >
+            <span>Reset Timer</span>
+          </button>
+        </div>
 
         <div className="bg-gray-50 rounded-2xl p-6 mt-6">
           <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">
