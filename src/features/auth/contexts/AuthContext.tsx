@@ -3,6 +3,7 @@
 import {
   createContext,
   PropsWithChildren,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -14,7 +15,6 @@ import LoadingPage from "@/app/components/LoadingPage";
 type AuthAppContext = {
   currentUser?: BrainUser;
   userPhoto?: string;
-  getAccessToken?: string;
 };
 
 export interface BrainUser {
@@ -129,4 +129,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
       {currentUser && children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }
