@@ -8,7 +8,7 @@ import { sortBy } from "lodash";
 
 type UserSelectProps = {
   selected: string[];
-  excluded: string[];
+  excluded?: string[];
   handleUpdateSelectedGraphUser?: (
     updatedSelected: GraphUser[],
     value: GraphUser,
@@ -19,7 +19,7 @@ type UserSelectProps = {
 
 export default function UserSelect({
   selected,
-  excluded,
+  excluded = [],
   handleUpdateSelectedGraphUser,
   handleUpdateSelected,
   disabled,
