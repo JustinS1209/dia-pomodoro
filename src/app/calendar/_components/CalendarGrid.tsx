@@ -366,7 +366,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                 <div className="flex items-center space-x-1 flex-1 min-w-0 pr-1">
                   <Timer className="h-3 w-3 flex-shrink-0" />
                   <h3 className="font-medium text-xs min-w-0">
-                    <span className="block truncate">Focus Session</span>
+                    <span className="block truncate">{session.title}</span>
                   </h3>
                 </div>
                 <Button
