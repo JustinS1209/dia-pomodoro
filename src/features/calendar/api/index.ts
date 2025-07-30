@@ -46,7 +46,7 @@ export async function fetchCalendarEvents(
         },
       ],
     },
-    // meetingDuration: "PT1H",
+    meetingDuration: "PT15M",
     maxCandidates: 100,
   };
 
