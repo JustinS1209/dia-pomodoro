@@ -24,11 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>{children}</AuthProvider>
-        </QueryClientProvider>
-      </body>
+<QueryClientProvider client={queryClient}>
+  <AuthProvider>
+    <Header />
+    {children}
+  </AuthProvider>
+</QueryClientProvider>      </body>
     </html>
   );
 }
