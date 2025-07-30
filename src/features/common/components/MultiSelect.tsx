@@ -8,6 +8,7 @@ import { Command as CommandPrimitive } from "cmdk";
 // import Image from "next/image";
 // import picLoader from "@/../public/assets/images/loader.gif";
 import { cn } from "@/lib/utils";
+import LoadingBars from "@/features/common/components/LoadingBars";
 
 export type MultiSelectAction = "add" | "remove";
 
@@ -128,13 +129,7 @@ export function MultiSelect<T>({
             ref={inputRef}
             value={inputValue}
           />
-          {/*<Image*/}
-          {/*  alt="Loading..."*/}
-          {/*  className={`w-6 h-6 -m-1 ${!isLoading && "invisible"}`}*/}
-          {/*  priority*/}
-          {/*  src={picLoader}*/}
-          {/*/>*/}
-          TODO loading
+          <LoadingBars className={!isLoading ? "invisible" : ""} />
         </div>
       </div>
       <div className={cn("relative", className)}>
