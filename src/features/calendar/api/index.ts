@@ -1,7 +1,6 @@
 import { CalendarData } from "@/features/calendar/configurations/types";
 import { graphAxios } from "@/lib/axios";
 
-// TODO test for correctness
 export async function fetchCalendarEvents(
   startDate: Date,
   endDate: Date,

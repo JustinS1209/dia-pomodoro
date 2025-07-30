@@ -1,4 +1,3 @@
-// TODO test for correctness
 import { fetchCalendarEvents } from "@/features/calendar/api";
 
 export function fetchCalendarEventsForToday(
