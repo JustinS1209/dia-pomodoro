@@ -121,7 +121,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   );
 
   if (loading) {
-    return <LoadingPage />; // 👈 Use the beautiful LoadingPage component
+    return <LoadingPage />;
   }
 
   return (

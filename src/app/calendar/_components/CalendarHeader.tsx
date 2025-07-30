@@ -1,9 +1,8 @@
-// src/components/calendar/CalendarHeader.tsx
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Sparkles, Zap, Clock, Trash2 } from "lucide-react";
+import { SharedSessionButton } from "./SharedSessionButton";
 
 interface CalendarHeaderProps {
   currentTime: Date;
@@ -50,6 +49,9 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         </div>
 
         <div className="flex items-center space-x-3">
+          {/* 👈 Add the SharedSessionButton here */}
+          <SharedSessionButton />
+
           {/* Clear Sessions Button */}
           <Button
             variant="outline"
@@ -98,12 +100,12 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
                 ) : freeSlots.length === 0 ? (
                   <>
                     <Clock className="h-5 w-5" />
-                    <span>No Free Slots</span>
+                    <span>Calendar Full</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="h-5 w-5 animate-pulse" />
-                    <span>AI Generate Pomodoros</span>
+                    <span>Generate {freeSlots.length} Focus Sessions</span>
                     <Zap className="h-4 w-4" />
                   </>
                 )}

@@ -1,4 +1,5 @@
 import { fetchCalendarEvents } from "@/features/calendar/api";
+import { CalendarData } from "@/features/calendar/configurations/types";
 
 export function fetchCalendarEventsForToday(
   userPrincipalName: string,

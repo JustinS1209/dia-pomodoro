@@ -19,6 +19,7 @@ export const Timer = ({
   initialTime,
   sessionType,
 }: TimerProps) => {
+
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined;
     if (isRunning && currentTime > 0) {
