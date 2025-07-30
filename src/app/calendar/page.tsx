@@ -5,7 +5,7 @@ import { CalendarHeader } from "@/app/calendar/_components/CalendarHeader";
 import { CalendarGrid } from "@/app/calendar/_components/CalendarGrid";
 import { CalendarStats } from "@/app/calendar/_components/CalendarStats";
 import { CalendarInstructions } from "@/app/calendar/_components/CalendarInstructions";
-import { mockEvents, timeSlots } from "@/lib/calendar-data";
+import { timeSlots } from "@/lib/calendar-data";
 import { CalendarEvent, PomodoroSession } from "@/app/calendar/types/calendar";
 
 const CalendarPage: React.FC = () => {
@@ -14,6 +14,8 @@ const CalendarPage: React.FC = () => {
     [],
   );
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState<boolean>(true);
 
   // Update current time every minute
   useEffect(() => {
@@ -23,12 +25,12 @@ const CalendarPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Find free time slots automatically - improved logic
+  // Find free time slots based on actual calendar events and pomodoro sessions
   const findFreeSlots = (): string[] => {
     const busySlots = new Set<string>();
 
-    // Mark slots occupied by meetings (they block the full hour)
-    mockEvents.forEach((event: CalendarEvent) => {
+    // Mark slots occupied by calendar events
+    calendarEvents.forEach((event: CalendarEvent) => {
       const startHour = parseInt(event.time.split(":")[0]);
       const durationHours = Math.ceil(event.duration / 60);
 
@@ -40,7 +42,7 @@ const CalendarPage: React.FC = () => {
       }
     });
 
-    // Mark slots occupied by existing pomodoro sessions (exact time match)
+    // Mark slots occupied by existing pomodoro sessions
     pomodoroSessions.forEach((session: PomodoroSession) => {
       busySlots.add(session.time);
     });
@@ -82,6 +84,12 @@ const CalendarPage: React.FC = () => {
     setPomodoroSessions([]);
   };
 
+  // Callback to receive events from CalendarGrid
+  const handleEventsUpdate = (events: CalendarEvent[], loading: boolean) => {
+    setCalendarEvents(events);
+    setEventsLoading(loading);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 pt-16 sm:pt-20 lg:pt-24 p-6">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -94,17 +102,17 @@ const CalendarPage: React.FC = () => {
         />
 
         <CalendarStats
-          eventsCount={mockEvents.length}
+          eventsCount={calendarEvents.length}
           sessionsCount={pomodoroSessions.length}
           freeSlots={findFreeSlots().length}
         />
 
         <CalendarGrid
-          events={mockEvents}
           pomodoroSessions={pomodoroSessions}
           currentTime={currentTime}
           freeSlots={findFreeSlots()}
           onClearSession={clearPomodoroSession}
+          onEventsUpdate={handleEventsUpdate}
         />
 
         <CalendarInstructions
