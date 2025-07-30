@@ -1,10 +1,9 @@
 import {
   CalendarData,
-  MeetingTimeSlot,
   MeetingTimeSuggestion,
   MeetingTimeSuggestionsResult,
 } from "@/features/calendar/configurations/types";
-import { graphAxios } from "@/lib/axios";
+import {graphAxios} from "@/lib/axios";
 
 export async function fetchCalendarEventsMe(
   startDate: Date,
