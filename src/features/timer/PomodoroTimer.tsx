@@ -9,6 +9,7 @@ import {
   Users,
   PictureInPicture,
 } from "lucide-react";
+import { playNotificationSound } from "@/features/timer/utils/notificationSound"
 
 type SessionType = "work" | "shortBreak" | "longBreak";
 
@@ -104,6 +105,7 @@ export const PomodoroTimer = () => {
   // Handle session completion
   useEffect(() => {
     if (currentTime <= 0 && isRunning) {
+      playNotificationSound();
       if (sessionType === "work") {
         const newSessionCount = sessionCount + 1;
         setSessionCount(newSessionCount);
