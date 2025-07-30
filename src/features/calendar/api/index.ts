@@ -46,7 +46,7 @@ export async function fetchCalendarEvents(
         },
       ],
     },
-    meetingDuration: "PT1H",
+    meetingDuration: "PT15M",
   };
 
   const apiUrl = "https://graph.microsoft.com/v1.0/me/findMeetingTimes";
