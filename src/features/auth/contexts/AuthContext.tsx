@@ -22,6 +22,7 @@ export interface BrainUser {
   givenName: string;
   userId: string;
   userInitials: string;
+  userPrincipalName: string;
 }
 
 export const AuthContext = createContext<AuthAppContext>({});
@@ -61,7 +62,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       givenName: decryptedToken.given_name || "",
       userId: decryptedToken.upn!.split("@")[0],
       userInitials: createInitials(decryptedToken.name),
-    };
+      userPrincipalName: decryptedToken.upn,
+    } as BrainUser;
   }
 
   function createInitials(userDisplayName: string) {
