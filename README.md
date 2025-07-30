@@ -2,7 +2,26 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, set up your local database with Docker:
+
+```bash
+docker-compose up -d
+```
+
+Next, install the project dependencies:
+
+```bash
+npm install
+```
+
+Then, run the database migrations with Prisma:
+
+```bash
+npx prisma migrate dev
+```
+
+Finally, run the development server:
+
 
 ```bash
 npm run dev
@@ -28,6 +47,30 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Database
+
+This project uses a PostgreSQL database running in a Docker container. To start the database, run:
+
+```bash
+docker-compose up -d
+```
+
+The database will be available at `postgres://user:password@localhost:5432/mydatabase`.
+
+### Migrations
+
+This project uses [Prisma](https://www.prisma.io/) to manage database migrations. To create and apply a new migration, run:
+
+```bash
+npx prisma migrate dev --name <migration-name>
+```
+
+To apply existing migrations, run:
+
+```bash
+npx prisma migrate deploy
+```
 
 ## Deploy on Vercel
 
