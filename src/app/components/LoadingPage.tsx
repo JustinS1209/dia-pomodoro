@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Sparkles, Clock, Brain } from "lucide-react";
+import {Clock, Sparkles, Timer} from "lucide-react";
 
 const LoadingPage: React.FC = () => {
   return (
