@@ -9,6 +9,7 @@ export async function fetchCalendarEvents(
   const start = startDate.toISOString();
   const end = endDate.toISOString();
   const requestUrl = `https://graph.microsoft.com/v1.0/users/${userPrincipalName}/calendarview?startdatetime=${start}&enddatetime=${end}`;
+
   const response = await graphAxios.get(requestUrl);
   return response.data.value;
 }
